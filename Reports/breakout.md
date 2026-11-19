@@ -66,3 +66,37 @@ The primary objectives were to:
 
 * Demonstrate the impact of the identified weaknesses using proof-of-compromise evidence.
 
+## 3. Methodology 
+
+The assessment followed a structured penetration testing workflow consisting of the following phases:
+
+1. **Reconnaissance:** Identification of open ports and running services.
+
+2. **Enumeration:** Discover of application endpoints, source code analysis, and SMB service enumeration.
+
+3. **Exploitation:** Abuse of the disclosed password and Usermin vulnerability to obtain access.
+
+4. **Post-exploitation:** Enumeration of the compromised host and collection of the user flag.
+
+5. **Credential discovery:** Analysis of accessible files and services.
+
+6. **Privilege escalation:** Abuse of the **tar** utility to obtain access to root files.
+
+7. **Verification:** Confirmation of elevated privileges and retrieval of the root flag.
+
+**Tools Used:**
+
+* Nmap
+
+* Gobuster
+
+* Enum4linux
+
+* Netcat
+
+* Web browser
+
+* Exploit-DB (EDB-50234)
+
+* Linux command-line utilities
+
