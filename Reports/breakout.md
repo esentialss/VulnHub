@@ -128,3 +128,54 @@ An initial Nmap scan was conducted to identify open ports, service versions, and
 
 Port 80 hosted the default Apache page, port 10000 hosted the Webmin web application, and port 20000 hosted the Usermin web application.
 
+# 5. Web Application Enumeration
+
+## 5.1 Source Code Analysis 
+
+While reviewing the source code of the website on port 80, a password encrypted using the Brainfuck algorithm was found. After decryption, the user password was obtained.
+
+**Evidence:** Encrypted password in the source code.
+
+<img width="1477" height="102" alt="image" src="https://github.com/user-attachments/assets/9d3c77bf-4d6e-4898-b799-f7d2f75b2432" />
+
+## 5.2 Directory Enumeration 
+
+A Gobuster scan was performed, which did not reveal any interesting paths.
+
+## 5.3 SMB Enumeration 
+
+SMB enumeration was initiated using enum4linux.
+
+**Command:** **enum4linux -a TARGET-IP**
+
+**Results:** The username **cyber** was disclosed.
+
+# 6. Initial Access 
+
+## 6.1 Usermin Authentication
+
+With the password and username in hand, login attempts were made against Webmin and Usermin. Authentication was successful in the Usermin application.
+
+## 6.1 Usermin Console Exploitation
+
+Within the Usermin dashboard, a console icon was found that allowed command execution as the **cyber** user. This enabled an attempt to obtain a reverse shell.
+
+**Evidence: User flag.**
+
+<img width="202" height="57" alt="image" src="https://github.com/user-attachments/assets/c3ae41d9-371a-4063-b3b4-80c01d2828fc" />
+
+**Command: cat user.txt**
+
+## 6.3 Reverse Shell Acquisition
+
+A public exploit available at the following URL was used: https://www.exploit-db.com/exploits/50234
+
+The exploit allowed the generation of a reverse shell payload. After downloading the exploit, the **listen_ip** and **listen_port** parameters were modified, nad the exploit was executed:
+
+**Command:** python3 50234.py -u TARGET-IP -l cyber -p "DECRYPTED_PASSWORD"
+
+A reverse shell command was generated, a listener was started:
+
+**Command: nc -lvnp 4444**
+
+The payload was then pasted into the console in the Usermin application, resulting in an interactive shell as the **cyber** user.
