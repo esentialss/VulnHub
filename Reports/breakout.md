@@ -179,3 +179,36 @@ A reverse shell command was generated, a listener was started:
 **Command: nc -lvnp 4444**
 
 The payload was then pasted into the console in the Usermin application, resulting in an interactive shell as the **cyber** user.
+
+**Result:** A reverse shell was obtained as the cyber user.
+
+**Finding:** Disclosure of credentials in source code and insufficient execution restrictions in the Usermin console.
+
+# 7. Post-Exploitation Enumeration
+
+Post-exploitation enumeration was initiated using common commands such as **id**, **whoami**, **sudo -l**, etc.
+
+While searching for SUID files, potential vectors were identified, but none proved successful.
+
+**Evidence:** SUID search results.
+
+<img width="358" height="183" alt="image" src="https://github.com/user-attachments/assets/02e29cfa-a778-4b01-ac5f-884192058810" />
+
+It was determined that the **tar** utility was available on the target machine. This made it possible to read the **/etc/shadow** file; however, cracking the root password took too long, so focus shifted to exploiting **tar**.
+
+# 8. Privilege Escalation
+
+## 8.1 Using tar to Archive Root Files
+
+Using **tar**, root files were archived, and their contents were when read.
+
+**Commands:**
+
+/home/cyber/tar -cf /tmp/root-files.tar /root
+/home/cyber/tar -tvf /tmp/root-files.tar
+
+**Results:** Access to the contents of the **/root** directory was obtained.
+
+**Evidence:** List of files in the archive.
+
+<img width="629" height="298" alt="image" src="https://github.com/user-attachments/assets/b46ef52b-73fb-441e-b871-6d22e3255424" />
