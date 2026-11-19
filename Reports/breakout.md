@@ -30,3 +30,39 @@ The attack chain demonstrates how weaknesses in secret storage in source code, i
 
 **Overall assessment:** The target was fully compromised within the authorized lab environment, with both user-level and root-level access obtained.
 
+# 2. Scope and Objectives
+
+## 2.1 Scope
+
+The assessment was limited to the Empire: Breakout machine on the VulnHub platform.
+
+**Attribute** | **Details**
+
+Target | Empire: Breakout
+
+Target IP | TARGET-IP
+
+Operating system | Linux
+
+Exposed services | HTTP (80), NetBIOS (139), SMB (445), HTTP (10000), HTTP (20000)
+
+Applications | Apache (80), Webmin (10000), Usermin (20000)
+
+Assessment environment | Authorized CTF lab
+
+## 2.2 Objectives
+
+The primary objectives were to:
+
+* Identify exposed network services and potential attack vectors.
+
+* Enumerate web applications and assess their authentication controls.
+
+* Identify and exploit vulnerabilities that could provide initial access.
+
+* Investigate local services and recover potentially exposed credentials.
+
+* Evaluate privilege escalation opportunities.
+
+* Demonstrate the impact of the identified weaknesses using proof-of-compromise evidence.
+
