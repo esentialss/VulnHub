@@ -100,3 +100,31 @@ The assessment followed a structured penetration testing workflow consisting of 
 
 * Linux command-line utilities
 
+# 4. Reconnaissance and Service Enumeration
+
+## 4.1 Port Scanning 
+
+An initial Nmap scan was conducted to identify open ports, service versions, and common service-related information.
+
+**Command:** nmap -sV -sC -p- -n -T5 TARGET-IP
+
+**Results:**
+
+**Port** | **Service** | **Status**
+
+80/tcp | HTTP | Open
+
+139/tcp | NetBIOS-SSN | Open
+
+445/tcp | NetBIOS-SSN (SMB) | Open
+
+10000/tcp HTTP (Webmin) | Open
+
+20000/tcp HTTP (Usermin) | Open
+
+**Evidence:** Nmap scan output.
+
+<img width="690" height="291" alt="image" src="https://github.com/user-attachments/assets/89fd29db-e6a1-457d-9d31-5acb30fb2c0b" />
+
+Port 80 hosted the default Apache page, port 10000 hosted the Webmin web application, and port 20000 hosted the Usermin web application.
+
