@@ -242,3 +242,99 @@ The following findings summarize the security weaknesses identified during the a
 
 **Description:** The source code of the website on port 80 contained a password encrypted using the Brainfuck algorithm, which, after decryption, enabled authentication to the Usermin application.
 
+**Impact:** Unauthorized access to the Usermin application and the ability to execute commands as the **cyber** user.
+
+**Evidence:** Encrypted password found in the source code; successful login to Usermin.
+
+**Recommendations:**
+
+* Never store passwords or secrets in application source code.
+
+* Use dedicated secret management mechanisms (e.g.,a vault).
+
+* Perform regular code scanning for disclosed secrets.
+
+* Rotate all exposed credentials.
+
+## F-02: Insufficient Execution Restrictions in the Usermin Console
+
+**Suggested severity:** High
+
+**Description:** The Usermin console allowed arbitrary command execution as the **cyber** user, which enabled obtaining a reverse shell.
+
+**Impact:** Remote code execution in the security context of the **cyber** user, leading to initial host compromise.
+
+**Evidence:** Successful execution of a reverse shell payload through the Usermin console.
+
+**Recommendations:**
+
+* Restrict access to the Usermin console to essentials functions only.
+
+* Enforce the principle of least privilege for application accounts.
+
+* Consider disabling the console for non-administrative accounts.
+
+* Monitor and log actions performed through the console.
+
+## F-03: Misconfiguration of the tar Utility Enabling Privilege Escalation
+
+**Suggested severity:** Critical
+
+**Description:** The **tar** utility was available to the **cyber** user nad allowed archiving and reading of root files, including the root flag.
+
+**Impact:** Privilege escalation to root and complete system compromise.
+
+**Evidence:** Successful archiving and extraction of files from the **/root** directory and retrieval of the root flag.
+
+**Recommendations:**
+
+* Remove unnecessary permissions for utilities such as **tar** for unprivileged accounts.
+
+* Review the sudoers configuration for excessive permissions.
+
+* Enforce the principle of least privilege for all system accounts.
+
+* Consider using dedicated, restricted backup tools instead of general-purpose archiving utilities. 
+
+* Regularly audit file and directory pemissions
+
+
+## 10. Attack Chain Summary
+
+The successful attack can be summarized as follows:
+
+1. **Reconnaissance:** Identified open ports 80, 139, 445, 10000 and 20000.
+
+2. **Web enumeration:** Found an encrypted password in the source code of the website on port 80.
+
+3. **SMB enumeration:** Disclosed the username **cyber**.
+
+4. **Initial access:** Decrypted the password and logged in to Usermin.
+
+5. **Shell acquisition:** Used the Usermin console and exploit EDB-50234 to obtain a reverse shell as **cyber**.
+
+6. **Post-exploitation:** Discovered access to **tar** and the ability to read root files.
+
+7. **Privilege escalation:** Used **tar** to archive and extract root files.
+
+8. **Objective completion:** Retrieved both the user flag and the root flag.
+
+## 11. Conclusion
+
+The assessment demonstrated that multiple security weaknesses in the Empire: Breakout environment could be chained to achieve complete system compromise.
+
+The initial weakness of password disclosure in source code enabled access to the Usermin application. Insufficient Restrictions in the Usermin console allowed a reverse shell to be obtained. Subsequently, a misconfiguration of **tar** utility enabled privilege escalation to root.
+
+The most significant lesson from this assessment is that application security, secret management, and operating system hardening must be addressed together. A single vulnerability may provide limited access, but several weaknesses across different layers can create a direct path to full compromise.
+
+**Remediation priorities:**
+
+1. Remove passwords and secrets from source code.
+
+2. Restrict Usermin console permissions.
+
+3. Remove unsafe permission for the **tar** utility.
+
+4. Review the sudoers configuration and system account permissions.
+
+**Final result:** Successful compromise of the application and underlying Linux host, including verified root-level access, within the authorized VulnHub lab environment.
